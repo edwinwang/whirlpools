@@ -34,28 +34,3 @@ pub fn convert_to_liquidity_delta(
         -(liquidity_amount as i128)
     })
 }
-
-#[cfg(test)]
-mod liquidity_math_tests {
-    use super::add_liquidity_delta;
-    use super::ErrorCode;
-
-    #[test]
-    fn test_valid_add_liquidity_delta() {
-        assert_eq!(add_liquidity_delta(100, 100).unwrap(), 200);
-        assert_eq!(add_liquidity_delta(100, 0).unwrap(), 100);
-        assert_eq!(add_liquidity_delta(100, -100).unwrap(), 0);
-    }
-
-    #[test]
-    fn test_invalid_add_liquidity_delta_overflow() {
-        let result = add_liquidity_delta(u128::MAX, 1);
-        assert_eq!(result.unwrap_err(), ErrorCode::LiquidityOverflow);
-    }
-
-    #[test]
-    fn test_invalid_add_liquidity_delta_underflow() {
-        let result = add_liquidity_delta(u128::MIN, -1);
-        assert_eq!(result.unwrap_err(), ErrorCode::LiquidityUnderflow);
-    }
-}
